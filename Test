@@ -1,0 +1,91 @@
+import zipfile
+
+file_name = "sdd-angular22-enterprise-master.zip"
+
+files = {
+    ".github/copilot-instructions.md": """# Enterprise Angular 22 AI Instructions
+
+You are an expert Enterprise Frontend Architect practicing Spec-Driven Development (SDD).
+
+## Angular 22 Specific Mandates
+1. **Change Detection:** Assume `OnPush` is the default strategy. Do not manually declare it unless overriding. The old 'Default' is now 'Eager'.
+2. **Reactivity & State:** Use Signals (`signal`, `computed`, `linkedSignal`) for state.
+3. **Forms:** Strictly use the newly stable Signal Forms API. Do not use verbose `FormGroup` boilerplates.
+4. **HTTP & Async:** Use the stable Resource APIs (`httpResource`, `resource()`) for async data fetching, which handle race conditions inherently.
+5. **Services:** Use the new `@Service()` decorator for root singletons instead of `@Injectable({ providedIn: 'root' })`.
+6. **Lazy Loading:** Use `injectAsync` for lazy dependency injection of heavy services.
+7. **Accessibility:** Utilize Angular Aria UI patterns for accessible components.
+8. **Hydration & SEO:** Ensure SSR compatibility. Incremental Hydration is on by default.
+""",
+
+    "docs/01-spec.md": """# 01 - Core Specification
+
+## Application Intent
+[Insert High-Level Business Goal]
+
+## User Personas
+1. [Persona 1]
+2. [Persona 2]
+
+## Key Features & Requirements
+- [Feature 1]
+- [Feature 2]
+""",
+
+    "docs/02-architecture-decisions.md": """# 02 - Architecture Decisions
+
+## Routing & Lazy Loading
+- **Routing:** Use functional route guards. Note that `canMatch` functions now require a mandatory third parameter `currentSnapshot`.
+- **Parameter Inheritance:** `paramsInheritanceStrategy` is set to `always` by default.
+
+## API & State Management
+- **HTTP Layer:** Rely exclusively on `httpResource` for fetching. 
+- **Services:** All root services must use the `@Service()` decorator. Heavy, route-specific services should be loaded lazily using `injectAsync()`.
+
+## SEO & SSR
+- **Hydration:** Rely on Angular 22's default Incremental Hydration. Do not opt-out unless strictly required for specific components using `withNoIncrementalHydration()`.
+""",
+
+    "docs/03-frontend-guidelines.md": """# 03 - Frontend Guidelines
+
+## Forms & Validation
+- **Signal Forms:** Use Signal Forms. Use `debounce()` for input changes and `minDate()`/`maxDate()` validators where dates are involved.
+- **Accessibility:** Use stable Angular Aria for tabs, dialogs, and comboboxes.
+
+## UI/UX & Styling
+- **CSS Architecture:** Tailwind CSS / SCSS modules.
+- **HTML:** Semantic HTML5 elements. Use modern template syntax (`@switch`, `@if`, arrow functions in templates).
+""",
+
+    "docs/04-security-seo.md": """# 04 - Security & SEO
+
+## Security Posture
+- **XSS Prevention:** Rely on Angular's template binding. For external HTML, strictly use `DomSanitizer`.
+- **SSRF Prevention:** Trust the platform-server package's built-in protections against Server-Side Request Forgery and backslash URL bypasses.
+
+## SEO Strategy
+- **Meta Tags:** Manage title and meta tags using Angular's `Meta` and `Title` services.
+- **SSR Optimization:** Preload resources on the server to seamlessly interact with the HTTP Transfer State.
+""",
+
+    "docs/05-plan.md": """# 05 - Implementation Plan
+
+*AI Agent will generate the architectural blueprint here based on 01-04.*
+""",
+
+    "docs/06-tasks.md": """# 06 - Task Execution Checklist
+
+*AI Agent will break down 05-plan.md into sequential tasks here.*
+""",
+    
+    "README.md": """# Complete Angular 22 Enterprise SDD Workspace
+
+Copy the `.github/` and `docs/` folders directly into the root of your existing Angular 22 project.
+"""
+}
+
+with zipfile.ZipFile(file_name, 'w', zipfile.ZIP_DEFLATED) as zipf:
+    for path, content in files.items():
+        zipf.writestr(path, content)
+
+print(f"Successfully generated {file_name} in your current folder!")
